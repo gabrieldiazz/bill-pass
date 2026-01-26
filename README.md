@@ -1,2 +1,2 @@
-# latino-policy-tracker
-**[WIP]** A tool for tracking U.S. legislation that affects Latino communities. It pulls data from Congress.gov, uses AI/ML to analyze and surface bills with potential community impact, and notifies users about updates to bills they follow, sponsors, and key legislative actions, all in one place.
+# BillPass
+**[WIP]** BillPass is a data platform that tracks U.S. congressional bills from the Congress.gov API and uses machine learning to forecast legislative outcomes. The platform analyzes bill metadata, sponsorship information, and congressional composition to generate predictive features for modeling.
