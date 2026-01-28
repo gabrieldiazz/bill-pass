@@ -1,8 +1,8 @@
 export type Congress = {
 	number: number;
-	partySenate: string;
+	partySenate: string | null;
 	partyMarginSenate: number;
-	partyHouse: string;
+	partyHouse: string | null;
 	partyMarginHouse: number;
 	unifiedGovernment: boolean;
 };
