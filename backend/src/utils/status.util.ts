@@ -1,8 +1,8 @@
-import { Status } from "../models/bill.model";
 import type { BillAction } from "../schemas/bill/actions.schema";
+import type { Status } from "../types/bill.type";
 
 export function deriveBillStatus(actions: BillAction[]): Status {
-	if (actions.length === 0) return Status.INTRODUCED;
+	if (actions.length === 0) return "INTRODUCED";
 
 	const validActions = actions.filter(
 		(action) => action.actionCode !== undefined,
@@ -15,51 +15,51 @@ export function deriveBillStatus(actions: BillAction[]): Status {
 			new Date(`${b.actionDate}T${b.actionTime}`).getTime(),
 	);
 
-	let status: Status = Status.INTRODUCED;
+	let status: Status = "INTRODUCED";
 
 	for (const action of sortedActions) {
 		switch (action.actionCode) {
 			case "36000":
-				status = Status.BECAME_LAW;
+				status = "BECAME_LAW";
 				break;
 			case "39000": // Public Law enacted over veto
-				status = Status.BECAME_LAW;
+				status = "BECAME_LAW";
 				break;
 			case "31000":
-				status = Status.VETOED;
+				status = "VETOED";
 				break;
 			case "8000":
-				status = Status.PASSED_HOUSE;
+				status = "PASSED_HOUSE";
 				break;
 			case "17000":
-				status = Status.PASSED_SENATE;
+				status = "PASSED_SENATE";
 				break;
 			case "20500": // senate actions: on website it says 20000, but actual data has 20500
-				status = Status.RESOLVING_DIFFERENCES;
+				status = "RESOLVING_DIFFERENCES";
 				break;
 			case "19500": // house actions: on website it says 19000, but actual data has 19500
-				status = Status.RESOLVING_DIFFERENCES;
+				status = "RESOLVING_DIFFERENCES";
 				break;
 			case "28000":
-				status = Status.TO_PRESIDENT;
+				status = "TO_PRESIDENT";
 				break;
 			case "33000": // Failed of passage in House over veto
-				status = Status.FAILED_HOUSE;
+				status = "FAILED_HOUSE";
 				break;
 			case "35000": // Failed of passage in Senate over veto
-				status = Status.FAILED_SENATE;
+				status = "FAILED_SENATE";
 				break;
 			case "9000": // Failed of passage/not agreed to in House
-				status = Status.FAILED_HOUSE;
+				status = "FAILED_HOUSE";
 				break;
 			case "18000": // Failed of passage/not agreed to in Senate
-				status = Status.FAILED_SENATE;
+				status = "FAILED_SENATE";
 				break;
 			case "1000": // Introduced in House
-				status = Status.INTRODUCED;
+				status = "INTRODUCED";
 				break;
 			case "10000": // Introduced in Senate
-				status = Status.INTRODUCED;
+				status = "INTRODUCED";
 				break;
 			// add more cases as needed
 		}
