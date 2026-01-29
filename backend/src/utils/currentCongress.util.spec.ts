@@ -1,4 +1,4 @@
-import { currentCongressYear } from "./currentCongress.util";
+import { congressStartDate, currentCongressYear } from "./currentCongress.util";
 
 describe("currentCongressYear", () => {
 	it("should return the correct congress year on an even year before Jan 3", () => {
@@ -18,5 +18,20 @@ describe("currentCongressYear", () => {
 	});
 	it("should return the correct congress year on an odd year after Jan 3", () => {
 		expect(currentCongressYear(new Date("2025-07-04"))).toBe(119);
+	});
+});
+
+describe("congressStartDate", () => {
+	it("should return the correct start date for the 118th Congress", () => {
+		const startDate = congressStartDate(118);
+		expect(startDate.toISOString()).toBe("2023-01-03T00:00:00.000Z");
+	});
+	it("should return the correct start date for the 117th Congress", () => {
+		const startDate = congressStartDate(117);
+		expect(startDate.toISOString()).toBe("2021-01-03T00:00:00.000Z");
+	});
+	it("should return the correct start date for the 116th Congress", () => {
+		const startDate = congressStartDate(116);
+		expect(startDate.toISOString()).toBe("2019-01-03T00:00:00.000Z");
 	});
 });

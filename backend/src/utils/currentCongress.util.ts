@@ -13,3 +13,8 @@ export function currentCongressYear(today = new Date()): number {
 
 	return congress;
 }
+
+export function congressStartDate(congress: number): Date {
+	const startYear = 1789 + (congress - 1) * 2;
+	return new Date(Date.UTC(startYear, 0, 3)); // January 3rd of the start year
+}
