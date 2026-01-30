@@ -24,7 +24,6 @@ model User {
   updatedAt DateTime   @updatedAt
 }
 
-// Will only collect Latino relevant bills
 model Bill {
   id                  String        @id @default(uuid())
   billNumber          Int
@@ -38,7 +37,12 @@ model Bill {
   policyArea          String
   legislativeSubjects BillSubject[]
   users               UserBill[]
-  relevancy           Float?
+
+  introducedAtSessionDay Int? // days since Congress session started
+  totalCosponsors        Int?
+  bipartisanCosponsors   Int?
+  sponsorInMajority      Boolean?
+  committeeCount         Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
