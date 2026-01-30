@@ -1,3 +1,5 @@
+import type { Congress } from "./congress.type";
+
 export type Status =
 	| "INTRODUCED"
 	| "PASSED_HOUSE"
@@ -15,6 +17,7 @@ export type Bill = {
 	billNumber: string;
 	billType: string;
 	congress: number;
+	congressMakeup: Congress;
 	title: string;
 	status: Status;
 	introducedDate: Date;
@@ -22,7 +25,13 @@ export type Bill = {
 	updateDate?: Date;
 	policyArea: string;
 	legislativeSubjects: Subject[];
-	relevancy?: number;
+
+	introducedAtSessionDay: number; // days since Congress session started
+	totalCosponsors: number;
+	totalOriginalCosponsors: number;
+	bipartisanCosponsors: number;
+	sponsorIsMajority: boolean;
+	committeeCount: number;
 
 	actions: Action[];
 	billSponsors: Sponsor[];
