@@ -4,5 +4,5 @@ export type Congress = {
 	partyMarginSenate: number;
 	partyHouse: string | null;
 	partyMarginHouse: number;
-	unifiedGovernment: boolean;
+	unifiedCongress: boolean;
 };

@@ -87,7 +87,7 @@ describe("mapToCongress", () => {
 			partyMarginSenate: 1,
 			partyHouse: "Republican",
 			partyMarginHouse: 1,
-			unifiedGovernment: false,
+			unifiedCongress: false,
 		});
 	});
 	it("should map members to Congress correctly when no majority party exists", () => {
@@ -105,7 +105,7 @@ describe("mapToCongress", () => {
 			partyMarginSenate: 0,
 			partyHouse: null,
 			partyMarginHouse: 0,
-			unifiedGovernment: true,
+			unifiedCongress: true,
 		});
 	});
 });

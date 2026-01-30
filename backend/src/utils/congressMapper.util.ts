@@ -62,7 +62,7 @@ export function mapToCongress(
 	);
 	const [partyHouse, partyMarginHouse] = findMajorityAndMargin(partyCountHouse);
 
-	const unifiedGovernment = partySenate === partyHouse;
+	const unifiedCongress = partySenate === partyHouse;
 
 	return {
 		number: currentCongressYear(introducedDate),
@@ -70,6 +70,6 @@ export function mapToCongress(
 		partyMarginSenate,
 		partyHouse,
 		partyMarginHouse,
-		unifiedGovernment,
+		unifiedCongress,
 	};
 }
