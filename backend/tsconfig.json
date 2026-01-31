@@ -12,7 +12,7 @@
 		"target": "ES2023",
 		// For nodejs:
 		"lib": ["esnext"],
-		"types": ["node", "jest"], // For nodejs types
+		"types": ["node", "vitest/globals"], // For nodejs types
 		// and npm install -D @types/node
 
 		// Other Outputs
@@ -43,5 +43,5 @@
 		"skipLibCheck": true
 	},
 	"include": ["src/**/*"],
-	"exclude": ["node_modules", "jest.config.ts", "**/*.test.ts"]
+	"exclude": ["node_modules", "vitest.config.ts", "**/*.test.ts"]
 }

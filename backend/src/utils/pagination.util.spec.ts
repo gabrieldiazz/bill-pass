@@ -1,3 +1,5 @@
+import { type MockedFunction, vi } from "vitest";
+
 import { z } from "zod";
 import { fetchEachPage } from "./pagination.util.js";
 
@@ -27,10 +29,10 @@ const mockInvalidPage = (response: unknown) =>
 	}) as unknown as Response;
 
 describe("fetchEachPage", () => {
-	let fetchMock: jest.MockedFunction<typeof fetch>;
+	let fetchMock: MockedFunction<typeof fetch>;
 	beforeEach(() => {
-		jest.clearAllMocks();
-		fetchMock = jest.fn() as jest.MockedFunction<typeof fetch>;
+		vi.clearAllMocks();
+		fetchMock = vi.fn() as MockedFunction<typeof fetch>;
 		global.fetch = fetchMock;
 	});
 

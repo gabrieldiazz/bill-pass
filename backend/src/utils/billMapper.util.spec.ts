@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from "vitest";
+
 import type { BillAction } from "../schemas/bill/actions.schema.js";
 import type { BillCommittee } from "../schemas/bill/committees.schema.js";
 import type { BillCosponsor } from "../schemas/bill/cosponsors.schema.js";
@@ -15,11 +17,11 @@ import {
 	mapToSponsorsAndCosponsors,
 } from "./billMapper.util.js";
 
-jest.mock("./status.util", () => ({
-	deriveBillStatus: jest.fn(() => "INTRODUCED"),
+vi.mock("./status.util", () => ({
+	deriveBillStatus: vi.fn(() => "INTRODUCED"),
 }));
-jest.mock("./congressMapper.util", () => ({
-	mapToCongress: jest.fn(() => ({
+vi.mock("./congressMapper.util", () => ({
+	mapToCongress: vi.fn(() => ({
 		number: 118,
 		partySenate: "D",
 		partyMarginSenate: 10,
@@ -28,11 +30,11 @@ jest.mock("./congressMapper.util", () => ({
 		unifiedCongress: true,
 	})),
 }));
-jest.mock("./billAnalytics.util", () => ({
-	calculateDaysSinceSessionStart: jest.fn(() => 5),
-	calculateTotalOriginalCosponsors: jest.fn(() => 2),
-	calculateBipartisanCosponsorsCount: jest.fn(() => 1),
-	isSponsorInMajorityParty: jest.fn(() => true),
+vi.mock("./billAnalytics.util", () => ({
+	calculateDaysSinceSessionStart: vi.fn(() => 5),
+	calculateTotalOriginalCosponsors: vi.fn(() => 2),
+	calculateBipartisanCosponsorsCount: vi.fn(() => 1),
+	isSponsorInMajorityParty: vi.fn(() => true),
 }));
 
 // mock data

@@ -1,3 +1,5 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { BillCosponsor } from "../schemas/bill/cosponsors.schema.js";
 import type { DetailedBill } from "../schemas/bill/detailed.schema.js";
 import {
@@ -12,13 +14,13 @@ import {
 } from "./congressMapper.util.js";
 
 // mock helper functions for isSponsorInMajorityParty function
-jest.mock("./congressMapper.util", () => ({
-	findChamberPartyCount: jest.fn(),
-	findMajorityAndMargin: jest.fn(),
+vi.mock("./congressMapper.util", () => ({
+	findChamberPartyCount: vi.fn(),
+	findMajorityAndMargin: vi.fn(),
 }));
 
-const mockedFindChamberPartyCount = findChamberPartyCount as jest.Mock;
-const mockedFindMajorityAndMargin = findMajorityAndMargin as jest.Mock;
+const mockedFindChamberPartyCount = vi.mocked(findChamberPartyCount);
+const mockedFindMajorityAndMargin = vi.mocked(findMajorityAndMargin);
 
 const mockBill = (
 	congress?: number,
@@ -60,12 +62,14 @@ describe("calculateDaysSinceSessionStart", () => {
 });
 
 describe("isSponsorInMajorityParty", () => {
-	beforeEach(() => jest.clearAllMocks());
+	beforeEach(() => vi.clearAllMocks());
 	it("should return true if the sponsor is in the majority project", () => {
-		mockedFindChamberPartyCount.mockReturnValue({
-			Democratic: 220,
-			Republican: 215,
-		});
+		mockedFindChamberPartyCount.mockReturnValue(
+			new Map([
+				["Democratic", 220],
+				["Republican", 215],
+			]),
+		);
 
 		mockedFindMajorityAndMargin.mockReturnValue(["Democratic", 5]);
 
@@ -76,10 +80,12 @@ describe("isSponsorInMajorityParty", () => {
 		expect(result).toBeTruthy();
 	});
 	it("should return false if the sponsor is not in the majority project", () => {
-		mockedFindChamberPartyCount.mockReturnValue({
-			Democratic: 225,
-			Republican: 210,
-		});
+		mockedFindChamberPartyCount.mockReturnValue(
+			new Map([
+				["Democratic", 225],
+				["Republican", 210],
+			]),
+		);
 
 		mockedFindMajorityAndMargin.mockReturnValue(["Democratic", 15]);
 
