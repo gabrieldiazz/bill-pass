@@ -1,9 +1,9 @@
-import type { Member } from "../schemas/congress/members.schema";
+import type { Member } from "../schemas/congress/members.schema.js";
 import {
 	findChamberPartyCount,
 	findMajorityAndMargin,
 	mapToCongress,
-} from "./congressMapper.util";
+} from "./congressMapper.util.js";
 
 const mockMember = (
 	partyName: string,

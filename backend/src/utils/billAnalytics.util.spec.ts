@@ -1,15 +1,15 @@
-import type { BillCosponsor } from "../schemas/bill/cosponsors.schema";
-import type { DetailedBill } from "../schemas/bill/detailed.schema";
+import type { BillCosponsor } from "../schemas/bill/cosponsors.schema.js";
+import type { DetailedBill } from "../schemas/bill/detailed.schema.js";
 import {
 	calculateBipartisanCosponsorsCount,
 	calculateDaysSinceSessionStart,
 	calculateTotalOriginalCosponsors,
 	isSponsorInMajorityParty,
-} from "./billAnalytics.util";
+} from "./billAnalytics.util.js";
 import {
 	findChamberPartyCount,
 	findMajorityAndMargin,
-} from "./congressMapper.util";
+} from "./congressMapper.util.js";
 
 // mock helper functions for isSponsorInMajorityParty function
 jest.mock("./congressMapper.util", () => ({

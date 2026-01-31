@@ -1,4 +1,4 @@
-import type { Congress } from "./congress.type";
+import type { Congress } from "./congress.type.js";
 
 export type Status =
 	| "INTRODUCED"

@@ -1,11 +1,11 @@
-import type { BillAction } from "../schemas/bill/actions.schema";
-import type { BillCommittee } from "../schemas/bill/committees.schema";
-import type { BillCosponsor } from "../schemas/bill/cosponsors.schema";
-import type { DetailedBill } from "../schemas/bill/detailed.schema";
-import type { BillSubjects } from "../schemas/bill/subjects.schema";
-import type { SummarizedBill } from "../schemas/bill/summaries.schema";
-import type { Member } from "../schemas/congress/members.schema";
-import type { Bill } from "../types/bill.type";
+import type { BillAction } from "../schemas/bill/actions.schema.js";
+import type { BillCommittee } from "../schemas/bill/committees.schema.js";
+import type { BillCosponsor } from "../schemas/bill/cosponsors.schema.js";
+import type { DetailedBill } from "../schemas/bill/detailed.schema.js";
+import type { BillSubjects } from "../schemas/bill/subjects.schema.js";
+import type { SummarizedBill } from "../schemas/bill/summaries.schema.js";
+import type { Member } from "../schemas/congress/members.schema.js";
+import type { Bill } from "../types/bill.type.js";
 
 import {
 	mapSponsor,
@@ -13,7 +13,7 @@ import {
 	mapToBill,
 	mapToCommittees,
 	mapToSponsorsAndCosponsors,
-} from "./billMapper.util";
+} from "./billMapper.util.js";
 
 jest.mock("./status.util", () => ({
 	deriveBillStatus: jest.fn(() => "INTRODUCED"),

@@ -1,11 +1,11 @@
-import type { BillCosponsor } from "../schemas/bill/cosponsors.schema";
-import type { DetailedBill } from "../schemas/bill/detailed.schema";
-import type { Member } from "../schemas/congress/members.schema";
+import type { BillCosponsor } from "../schemas/bill/cosponsors.schema.js";
+import type { DetailedBill } from "../schemas/bill/detailed.schema.js";
+import type { Member } from "../schemas/congress/members.schema.js";
 import {
 	findChamberPartyCount,
 	findMajorityAndMargin,
-} from "./congressMapper.util";
-import { congressStartDate } from "./currentCongress.util";
+} from "./congressMapper.util.js";
+import { congressStartDate } from "./currentCongress.util.js";
 
 export function calculateDaysSinceSessionStart(bill: DetailedBill): number {
 	const sessionStart = congressStartDate(bill.congress);

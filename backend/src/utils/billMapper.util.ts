@@ -1,19 +1,19 @@
-import type { BillAction } from "../schemas/bill/actions.schema";
-import type { BillCommittee } from "../schemas/bill/committees.schema";
-import type { BillCosponsor } from "../schemas/bill/cosponsors.schema";
-import type { DetailedBill } from "../schemas/bill/detailed.schema";
-import type { BillSubjects } from "../schemas/bill/subjects.schema";
-import type { SummarizedBill } from "../schemas/bill/summaries.schema";
-import type { Member } from "../schemas/congress/members.schema";
-import type { Bill, SponsorRole } from "../types/bill.type";
+import type { BillAction } from "../schemas/bill/actions.schema.js";
+import type { BillCommittee } from "../schemas/bill/committees.schema.js";
+import type { BillCosponsor } from "../schemas/bill/cosponsors.schema.js";
+import type { DetailedBill } from "../schemas/bill/detailed.schema.js";
+import type { BillSubjects } from "../schemas/bill/subjects.schema.js";
+import type { SummarizedBill } from "../schemas/bill/summaries.schema.js";
+import type { Member } from "../schemas/congress/members.schema.js";
+import type { Bill, SponsorRole } from "../types/bill.type.js";
 import {
 	calculateBipartisanCosponsorsCount,
 	calculateDaysSinceSessionStart,
 	calculateTotalOriginalCosponsors,
 	isSponsorInMajorityParty,
-} from "./billAnalytics.util";
-import { mapToCongress } from "./congressMapper.util";
-import { deriveBillStatus } from "./status.util";
+} from "./billAnalytics.util.js";
+import { mapToCongress } from "./congressMapper.util.js";
+import { deriveBillStatus } from "./status.util.js";
 
 export function mapToActions(actions: BillAction[]): Bill["actions"] {
 	return actions.map((action) => ({

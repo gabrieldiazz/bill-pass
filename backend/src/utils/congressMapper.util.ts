@@ -1,6 +1,6 @@
-import type { Member } from "../schemas/congress/members.schema";
-import type { Congress } from "../types/congress.type";
-import { currentCongressYear } from "./currentCongress.util";
+import type { Member } from "../schemas/congress/members.schema.js";
+import type { Congress } from "../types/congress.type.js";
+import { currentCongressYear } from "./currentCongress.util.js";
 
 // create a frequency map of party names to counts for a given chamber
 export function findChamberPartyCount(

@@ -1,5 +1,5 @@
-import type { BillAction } from "../schemas/bill/actions.schema";
-import type { Status } from "../types/bill.type";
+import type { BillAction } from "../schemas/bill/actions.schema.js";
+import type { Status } from "../types/bill.type.js";
 
 export function deriveBillStatus(actions: BillAction[]): Status {
 	if (actions.length === 0) return "INTRODUCED";

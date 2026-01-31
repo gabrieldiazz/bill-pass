@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { fetchEachPage } from "./pagination.util";
+import { fetchEachPage } from "./pagination.util.js";
 
 // define simple zod schemas for testing
 type TestItem = z.infer<typeof TestItemSchema>;

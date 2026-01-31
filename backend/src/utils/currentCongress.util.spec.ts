@@ -1,4 +1,7 @@
-import { congressStartDate, currentCongressYear } from "./currentCongress.util";
+import {
+	congressStartDate,
+	currentCongressYear,
+} from "./currentCongress.util.js";
 
 describe("currentCongressYear", () => {
 	it("should return the correct congress year on an even year before Jan 3", () => {

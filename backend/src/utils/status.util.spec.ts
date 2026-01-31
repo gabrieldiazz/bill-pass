@@ -1,4 +1,4 @@
-import { deriveBillStatus } from "./status.util";
+import { deriveBillStatus } from "./status.util.js";
 
 const mockAction = (
 	actionCode: string,
