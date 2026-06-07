@@ -37,6 +37,14 @@ import { fetchEachPage } from "../utils/pagination.util.js";
 
 const baseUrl = "https://api.congress.gov/v3/bill";
 
+function isCongressNotFoundError(error: unknown): boolean {
+	return error instanceof Error && error.message === "Congress API error: 404";
+}
+
+function billTypePath(type: string): string {
+	return type.toLowerCase();
+}
+
 // example date: 2025-01-01T00:00:00z
 export async function fetchRawBills(
 	congress?: number,
@@ -56,6 +64,8 @@ export async function fetchRawBills(
 		url.toString(),
 		RawBillResponseSchema,
 		"bills",
+		fetch,
+		limit,
 	);
 }
 
@@ -64,7 +74,9 @@ export async function fetchBillDetails(
 	chamber: string,
 	billId: string,
 ): Promise<DetailedBill> {
-	const url = new URL(`${baseUrl}/${congress}/${chamber}/${billId}`);
+	const url = new URL(
+		`${baseUrl}/${congress}/${billTypePath(chamber)}/${billId}`,
+	);
 	url.searchParams.set("api_key", process.env.API_KEY as string);
 	url.searchParams.set("format", "json");
 
@@ -82,7 +94,9 @@ export async function fetchBillActions(
 	chamber: string,
 	billId: string,
 ): Promise<BillAction[]> {
-	const url = new URL(`${baseUrl}/${congress}/${chamber}/${billId}/actions`);
+	const url = new URL(
+		`${baseUrl}/${congress}/${billTypePath(chamber)}/${billId}/actions`,
+	);
 	url.searchParams.set("api_key", process.env.API_KEY as string);
 	url.searchParams.set("format", "json");
 	return fetchEachPage<BillAction, "actions", typeof BillActionsResponseSchema>(
@@ -98,7 +112,9 @@ export async function fetchBillSubjects(
 	chamber: string,
 	billId: string,
 ): Promise<BillSubjects> {
-	const url = new URL(`${baseUrl}/${congress}/${chamber}/${billId}/subjects`);
+	const url = new URL(
+		`${baseUrl}/${congress}/${billTypePath(chamber)}/${billId}/subjects`,
+	);
 	url.searchParams.set("api_key", process.env.API_KEY as string);
 	url.searchParams.set("format", "json");
 	url.searchParams.set("limit", "200");
@@ -118,14 +134,23 @@ export async function fetchBillCosponsors(
 	chamber: string,
 	billId: string,
 ): Promise<BillCosponsor[]> {
-	const url = new URL(`${baseUrl}/${congress}/${chamber}/${billId}/cosponsors`);
+	const url = new URL(
+		`${baseUrl}/${congress}/${billTypePath(chamber)}/${billId}/cosponsors`,
+	);
 	url.searchParams.set("api_key", process.env.API_KEY as string);
 	url.searchParams.set("format", "json");
-	return fetchEachPage<
-		BillCosponsor,
-		"cosponsors",
-		typeof BillCosponsorsResponseSchema
-	>(url.toString(), BillCosponsorsResponseSchema, "cosponsors");
+	try {
+		return await fetchEachPage<
+			BillCosponsor,
+			"cosponsors",
+			typeof BillCosponsorsResponseSchema
+		>(url.toString(), BillCosponsorsResponseSchema, "cosponsors");
+	} catch (error) {
+		if (isCongressNotFoundError(error)) {
+			return [];
+		}
+		throw error;
+	}
 }
 
 export async function fetchBillSummaries(
@@ -133,14 +158,23 @@ export async function fetchBillSummaries(
 	chamber: string,
 	billId: string,
 ): Promise<SummarizedBill[]> {
-	const url = new URL(`${baseUrl}/${congress}/${chamber}/${billId}/summaries`);
+	const url = new URL(
+		`${baseUrl}/${congress}/${billTypePath(chamber)}/${billId}/summaries`,
+	);
 	url.searchParams.set("api_key", process.env.API_KEY as string);
 	url.searchParams.set("format", "json");
-	return fetchEachPage<
-		SummarizedBill,
-		"summaries",
-		typeof SummarizedBillResponseSchema
-	>(url.toString(), SummarizedBillResponseSchema, "summaries");
+	try {
+		return await fetchEachPage<
+			SummarizedBill,
+			"summaries",
+			typeof SummarizedBillResponseSchema
+		>(url.toString(), SummarizedBillResponseSchema, "summaries");
+	} catch (error) {
+		if (isCongressNotFoundError(error)) {
+			return [];
+		}
+		throw error;
+	}
 }
 
 export async function fetchBillCommittees(
@@ -148,14 +182,23 @@ export async function fetchBillCommittees(
 	chamber: string,
 	billId: string,
 ): Promise<BillCommittee[]> {
-	const url = new URL(`${baseUrl}/${congress}/${chamber}/${billId}/committees`);
+	const url = new URL(
+		`${baseUrl}/${congress}/${billTypePath(chamber)}/${billId}/committees`,
+	);
 	url.searchParams.set("api_key", process.env.API_KEY as string);
 	url.searchParams.set("format", "json");
-	return fetchEachPage<
-		BillCommittee,
-		"committees",
-		typeof BillCommitteesResponseSchema
-	>(url.toString(), BillCommitteesResponseSchema, "committees");
+	try {
+		return await fetchEachPage<
+			BillCommittee,
+			"committees",
+			typeof BillCommitteesResponseSchema
+		>(url.toString(), BillCommitteesResponseSchema, "committees");
+	} catch (error) {
+		if (isCongressNotFoundError(error)) {
+			return [];
+		}
+		throw error;
+	}
 }
 
 export async function fetchCongressMembers(
@@ -177,24 +220,19 @@ export async function fetchCompleteBill(
 	congress: number,
 	chamber: string,
 	billId: string,
+	membersOverride?: Member[],
 ): Promise<Bill> {
-	const [
-		details,
-		actions,
-		subjects,
-		cosponsors,
-		summaries,
-		committees,
-		members,
-	] = await Promise.all([
-		fetchBillDetails(congress, chamber, billId),
-		fetchBillActions(congress, chamber, billId),
-		fetchBillSubjects(congress, chamber, billId),
-		fetchBillCosponsors(congress, chamber, billId),
-		fetchBillSummaries(congress, chamber, billId),
-		fetchBillCommittees(congress, chamber, billId),
-		fetchCongressMembers(congress),
-	]);
+	const [details, actions, subjects, cosponsors, summaries, committees] =
+		await Promise.all([
+			fetchBillDetails(congress, chamber, billId),
+			fetchBillActions(congress, chamber, billId),
+			fetchBillSubjects(congress, chamber, billId),
+			fetchBillCosponsors(congress, chamber, billId),
+			fetchBillSummaries(congress, chamber, billId),
+			fetchBillCommittees(congress, chamber, billId),
+		]);
+	const members = membersOverride ?? (await fetchCongressMembers(congress));
+
 	return mapToBill(
 		details,
 		actions,

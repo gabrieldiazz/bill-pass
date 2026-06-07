@@ -21,6 +21,7 @@ export async function fetchEachPage<
 	schema: S,
 	key: K,
 	fetchFn: typeof fetch = fetch,
+	maxResults?: number,
 ): Promise<T[]> {
 	const results: T[] = [];
 	let nextUrl: string | null = initialUrl;
@@ -35,6 +36,10 @@ export async function fetchEachPage<
 		const data = await response.json();
 		const parsedData = schema.parse(data);
 		results.push(...parsedData[key]);
+
+		if (maxResults !== undefined && results.length >= maxResults) {
+			return results.slice(0, maxResults);
+		}
 
 		if (parsedData.pagination.next) {
 			const temp = new URL(parsedData.pagination.next);

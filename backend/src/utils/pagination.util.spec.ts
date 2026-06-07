@@ -69,6 +69,24 @@ describe("fetchEachPage", () => {
 			),
 		).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
 	});
+
+	it("should stop fetching when max results is reached", async () => {
+		fetchMock.mockResolvedValueOnce(
+			mockPage([{ id: 1 }, { id: 2 }], "https://myurl.gov?page=2"),
+		);
+
+		expect(
+			await fetchEachPage<TestItem, "items", typeof TestResponseSchema>(
+				"https://myurl.gov",
+				TestResponseSchema,
+				"items",
+				fetchMock,
+				1,
+			),
+		).toEqual([{ id: 1 }]);
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+	});
+
 	it("should return an empty array when no items are present", async () => {
 		fetchMock.mockResolvedValueOnce(mockPage([], undefined));
 		expect(
